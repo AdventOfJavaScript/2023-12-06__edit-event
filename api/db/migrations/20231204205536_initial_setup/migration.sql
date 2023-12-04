@@ -8,6 +8,10 @@ CREATE TYPE "Status" AS ENUM ('INVITED', 'DECLINED', 'ACCEPTED');
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
+    "hashedPassword" TEXT NOT NULL,
+    "salt" TEXT NOT NULL,
+    "resetToken" TEXT,
+    "resetTokenExpiresAt" TIMESTAMP(3),
     "firstName" TEXT,
     "lastName" TEXT,
     "avatar" TEXT,
