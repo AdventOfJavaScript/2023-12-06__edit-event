@@ -10,6 +10,7 @@ import { MetaTags, useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import Checkbox from 'src/components/Checkbox/Checkbox'
+import EventForm from 'src/components/EventForm/EventForm'
 import HeaderWithRulers from 'src/components/HeaderWithRulers/HeaderWithRulers'
 
 const CREATE_EVENT_MUTATION = gql`
@@ -31,9 +32,9 @@ const CREATE_EVENT_MUTATION = gql`
 
 const NewEventPage = () => {
   const [createEvent, { loading }] = useMutation(CREATE_EVENT_MUTATION, {
-    onCompleted: () => {
+    onCompleted: (data) => {
       toast.success('Event was successfully created.')
-      navigate(routes.groupInvite())
+      navigate(routes.groupInvite({ id: data.createEvent.id }))
     },
     onError: (error) => {
       console.error({ error })
@@ -61,25 +62,7 @@ const NewEventPage = () => {
           className="mb-8 text-white"
           heading="Set up Your Event"
         />
-        <Form onSubmit={handleSubmit}>
-          <fieldset disabled={loading}>
-            <div className="field">
-              <Label name="eventName">Event Name</Label>
-              <TextField name="eventName" placeholder="" />
-            </div>
-            <div className="field">
-              <Label name="eventDate">Event Date</Label>
-              <DateField name="eventDate" placeholder="" />
-            </div>
-            <div className="field">
-              <Checkbox
-                label="Send out a reminder for an event"
-                name="eventReminder"
-              />
-            </div>
-            <button type="submit">Submit</button>
-          </fieldset>
-        </Form>
+        <EventForm handleSubmit={handleSubmit} loading={loading} />
       </div>
     </>
   )
